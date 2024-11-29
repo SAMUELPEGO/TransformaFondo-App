@@ -4,10 +4,12 @@ import { toast, Toaster } from "sonner";
 import { createDownloadUrl, testUrl } from "@/app/helpers/helpers";
 import replace_bg from "@/app/services/replaceBG";
 
-export default function ModalPrompt({ isOpen, setIsOpen, img, btnDownload}) {
+export default function ModalPrompt({ isOpen, setIsOpen, img, btnDownload,loading,setLoading,visibleLoading,setVisibleLoading}) {
   async function replaceBgHandler(e) {
     e.preventDefault();
     setIsOpen();
+    setLoading(true)
+    setVisibleLoading(true)
     const prompt = e.target.children[0].value;
     try {
       const req = await replace_bg(prompt)
@@ -23,7 +25,8 @@ export default function ModalPrompt({ isOpen, setIsOpen, img, btnDownload}) {
         img.current.hidden = false;
         const href = await createDownloadUrl(req.url)
         btnDownload.current.href = href.url
-        btnDownload.current.className = ""
+        setLoading(false)
+        setVisibleLoading(false)
         e.target.children[0].value = ""
       }else {
         toast("tuvimos un error vuelva a intentarlo")

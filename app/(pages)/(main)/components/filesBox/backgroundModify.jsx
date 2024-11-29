@@ -10,7 +10,8 @@ import remove_bg from "@/app/services/removeBG";
 
 export default function BgModify() {
   const { isOpen, openModalPrompt, closeModalPrompt } = useControlModal();
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [visibleLoading, setVisibleLoading] = useState(false);
   const image = useRef(null);
   const [btnDownload, btnRemove, btnReplace] = [
     useRef(null),
@@ -18,32 +19,39 @@ export default function BgModify() {
     useRef(null),
   ];
   async function uploadFile(e) {
+    setLoading(true);
+    setVisibleLoading(true)
     uploadHandler(e).then((res) => {
       if (res.error) {
         toast(res.error);
       } else {
         image.current.src = res.url;
         image.current.hidden = false;
-        btnRemove.current.className = "";
-        btnReplace.current.className = "";
+        setLoading(false)
+        setVisibleLoading(false)
+
       }
     });
   }
   async function removeBgHandler() {
+    setLoading(true);
+    setVisibleLoading(true)
     const removeBg = await remove_bg();
     if (removeBg.error) {
       toast(removeBg.error);
     } else if (removeBg.url) {
       const url = await testUrl(removeBg.url);
-     if (url.url) {
-      image.current.src = url.url;
-      image.current.hidden = false;
-      btnDownload.current.href = url.url;
-      btnDownload.current.className = "";
-    }
-    else {
-      toast("tuvimos un error inténtelo de nuevo")
-    }
+      if (url.url) {
+        image.current.src = url.url;
+        image.current.hidden = false;
+        btnDownload.current.href = url.url;
+        setLoading(false);
+        setVisibleLoading(false)
+
+      }
+      else {
+        toast("tuvimos un error inténtelo de nuevo")
+      }
     }
   }
 
@@ -51,7 +59,10 @@ export default function BgModify() {
     <div className="bg-modify">
       <div className="bg-modify-imagesContainer">
         <div>
-          <img src="" ref={image} hidden/>
+          <div className={visibleLoading ? "visible" : "not-visible"}>
+            <img src="/assets/icons/pulse-multiple.svg" alt="" />
+          </div>
+          <img src="" ref={image} hidden />
         </div>
       </div>
       <form action="">
@@ -68,7 +79,7 @@ export default function BgModify() {
           type="button"
           onClick={removeBgHandler}
           ref={btnRemove}
-          className="disabled"
+          className={loading ? "disabled" : ""}
         >
           Remover
         </button>
@@ -76,11 +87,12 @@ export default function BgModify() {
           type="button"
           onClick={openModalPrompt}
           ref={btnReplace}
-          className="disabled"
+          className={loading ? "disabled" : ""}
+
         >
           Remplazar
         </button>
-        <a href="" ref={btnDownload} download="archivo" className="disabled">
+        <a href="" ref={btnDownload} download="archivo" className={loading ? "disabled" : ""}>
           Descargar
         </a>
       </form>
@@ -89,6 +101,10 @@ export default function BgModify() {
         setIsOpen={closeModalPrompt}
         img={image}
         btnDownload={btnDownload}
+        loading={loading}
+        setLoading={setLoading}
+        visibleLoading={visibleLoading}
+        setVisibleLoading={setVisibleLoading}
       />
       <Toaster />
     </div>

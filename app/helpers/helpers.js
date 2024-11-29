@@ -21,17 +21,18 @@ export function cookieParser() {
 export async function testUrl(url) { 
   try {
     const req = await fetch(url, { method: "HEAD", cache: "no-cache" });
-    if (!req.ok) {
-      for (let count = 0; count < 10; count++) {
+    if (req.status >= 400 && req.status <= 499) {
+      for (let count = 0; count < 15; count++) {
+      
         let req = await fetch(url, { method: "HEAD", cache: "no-cache" });
-        if (!req.ok) {
+        if (req.status >= 400 && req.status <= 499) {
           continue;
         } else if (req.ok) {
           return { url: url };
         }
       }
       return { error: "url no válida" };
-    } else {
+    } else if(req.ok) {
       return { url: url };
     }
   } catch (err) {

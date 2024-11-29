@@ -16,10 +16,23 @@
   width: 100%;
   height: 100%;
   padding: 16px 0;
+  position: relative;
   
 }
+.bg-modify-imagesContainer > div > div {
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
 
-.bg-modify-imagesContainer img {
+}
+.bg-modify-imagesContainer > div > div img {
+  width: 200px;
+  aspect-ratio: 1/1;
+  }
+.bg-modify-imagesContainer > div > img {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -63,3 +76,11 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.visible {
+  display: block;
+  opacity: 1;
+  }
+  .not-visible {
+  display: none;
+  opacity: 0;
+  }
