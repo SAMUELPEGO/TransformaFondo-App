@@ -1,0 +1,69 @@
+.modalPrompt-wrapper {
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 1;
+  opacity: 0;
+  display: none;
+}
+.modalPrompt {
+  margin: 50px auto;
+  box-shadow: inset 0px 0px 6px 2px var(--primary);
+  width: clamp(375px, 30%, 800px);
+  height: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  font-size: 24px;
+  background: var(--bg-light);
+  border-radius: 16px;
+}
+.modalPrompt p {
+  color: var(--secondary);
+}
+
+.modalPrompt textarea {
+  width: clamp(375px, 50%, 800px);
+  height: 50px;
+  padding: 10px;
+  resize: none;
+  text-align: left;
+  border: none;
+  outline: 2px dotted var(--secondary) ;
+}
+.modalPrompt textarea:focus {
+  outline: 2px dotted var(--primary);
+}
+.modalPrompt textarea:hover {
+  outline: 2px dotted var(--primary);
+}
+
+.visible {
+  display: flex;
+  animation: fadeIn 0.5s forwards;
+}
+.hidden {
+  animation: fadeOut 0.5s forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    display: none;
+  }
+}
