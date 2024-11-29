@@ -4,13 +4,13 @@ import ModalPrompt from "../modals/modalPrompt/modalPrompt";
 import { uploadHandler } from "@/app/services/uploadFile";
 import { Toaster, toast } from "sonner";
 import useControlModal from "@/app/hooks/useControlModal";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { testUrl } from "@/app/helpers/helpers";
 import remove_bg from "@/app/services/removeBG";
 
 export default function BgModify() {
   const { isOpen, openModalPrompt, closeModalPrompt } = useControlModal();
-
+  const [loading,setLoading] = useState(true);
   const image = useRef(null);
   const [btnDownload, btnRemove, btnReplace] = [
     useRef(null),
